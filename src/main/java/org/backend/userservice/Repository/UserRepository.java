@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository  extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
+     @Override
+     User save(User user); // upsert
 
-     User save(User user); // if user present then update else create
      Optional<User> findByEmail(String email);
-
 }

@@ -1,5 +1,8 @@
 package org.backend.userservice.Configuration.Models;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import lombok.Getter;
+import lombok.Setter;
 import org.backend.userservice.Models.Role;
 import org.backend.userservice.Models.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Getter
+@Setter
+@JsonDeserialize
 public class CustomUserDetails implements UserDetails {
     private String username;
     private String password;
@@ -16,8 +22,12 @@ public class CustomUserDetails implements UserDetails {
     private boolean accountNonLocked;
     private boolean credentialsNonExpired;
     private boolean enabled;
+    //private Long userid;
 
-    private List<CustomGrantedAuthority> grantedAuthorities;
+    private List<CustomGrantedAuthority> authorities;
+    public CustomUserDetails(){
+
+    }
 
     public CustomUserDetails(User user){
         this.username=user.getEmail();
@@ -27,17 +37,18 @@ public class CustomUserDetails implements UserDetails {
         this.credentialsNonExpired=true;
         this.enabled=true;
 
-        this.grantedAuthorities=new ArrayList<>();
+        this.authorities=new ArrayList<>();
         for(Role role: user.getRoles()){
-            grantedAuthorities.add(new CustomGrantedAuthority(role));
+            authorities.add(new CustomGrantedAuthority(role));
         }
+        //this.userid=user.getId();
     }
 
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return grantedAuthorities;
+        return authorities;
     }
 
     @Override
@@ -69,4 +80,7 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+//    public long getUserId(){
+//        return userid;
+//    }
 }

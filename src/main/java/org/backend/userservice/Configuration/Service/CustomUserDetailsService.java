@@ -1,5 +1,6 @@
 package org.backend.userservice.Configuration.Service;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.backend.userservice.Configuration.Models.CustomUserDetails;
 import org.backend.userservice.Models.User;
 import org.backend.userservice.Repository.UserRepository;
@@ -12,10 +13,15 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@JsonDeserialize
 public class CustomUserDetailsService implements UserDetailsService {
 
 
+    @Autowired
     private UserRepository userRepository;
+    public CustomUserDetailsService(){
+
+    }
 
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
